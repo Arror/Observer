@@ -58,7 +58,7 @@ public final class Observer<O> {
             guard
                 let data = self.dataMapping[changeKeyPath] as? Observer.OptionalMethod<V> else {
                     
-                    fatalError("Can't read before observed.")
+                    return self.value[keyPath: changeKeyPath]
             }
             
             return data.oGet()
@@ -68,7 +68,9 @@ public final class Observer<O> {
                 let data = self.dataMapping[changeKeyPath] as? Observer.OptionalMethod<V>,
                 let handler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<Optional<V>> else {
                     
-                    fatalError("Can't write before observed.")
+                    self.value[keyPath: changeKeyPath] = newValue
+                    
+                    return
             }
             
             let old = self.value[keyPath: changeKeyPath]
@@ -86,7 +88,7 @@ public final class Observer<O> {
             guard
                 let data = self.dataMapping[changeKeyPath] as? Observer.Method<V> else {
                     
-                    fatalError("Can't read before observed.")
+                    return self.value[keyPath: changeKeyPath]
             }
             
             return data.get()
@@ -96,7 +98,9 @@ public final class Observer<O> {
                 let data = self.dataMapping[changeKeyPath] as? Observer.Method<V>,
                 let handler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<V> else {
                     
-                    fatalError("Can't write before observed.")
+                    self.value[keyPath: changeKeyPath] = newValue
+                    
+                    return
             }
             
             let old = self.value[keyPath: changeKeyPath]
