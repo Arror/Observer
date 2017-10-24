@@ -91,3 +91,43 @@ public final class Observer<O> {
         self.changeHandlerMapping[keyPath] = changeHandler
     }
 }
+
+extension Observer where O: Comparable {
+    
+    public static func <(lhs: Observer<O>, rhs: Observer<O>) -> Bool {
+        
+        return lhs.value < rhs.value
+    }
+}
+
+extension Observer where O: Equatable {
+    
+    public static func ==(lhs: Observer<O>, rhs: Observer<O>) -> Bool {
+        
+        return lhs.value == rhs.value
+    }
+}
+
+extension Observer where O: Hashable {
+    
+    public var hashValue: Int {
+        
+        return self.value.hashValue
+    }
+}
+
+extension Observer where O: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return self.value.description
+    }
+}
+
+extension Observer where O: CustomDebugStringConvertible {
+    
+    public var debugDescription: String {
+        
+        return self.value.debugDescription
+    }
+}
