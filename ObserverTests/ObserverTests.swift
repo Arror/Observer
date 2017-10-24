@@ -13,24 +13,56 @@ class ObserverTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let op = Observer(Person())
+        
+        op.observe(keyPath: \.name) { p, old, new in
+            
+            print("Name --> Old: \(old) New: \(new)")
+        }
+        
+        op.observe(keyPath: \.age) { p, old, new in
+            
+            print("Name --> Old: \(old) New: \(new)")
+        }
+        
+        op.observe(keyPath: \.id) { p, old, new in
+            
+            print("Name --> Old: \(old ?? "NULL") New: \(new ?? "NULL")")
+        }
+        
+        op[\.name] = "Name0"
+        op[\.name] = "Name1"
+        op[\.name] = "Name2"
+        
+        op[\.age] = 1
+        op[\.age] = 2
+        op[\.age] = 3
+        
+        op[\.id] = "ID 1"
+        op[\.id] = "ID 2"
+        op[\.id] = "ID 3"
+        op[\.id] = nil
     }
     
     func testPerformanceExample() {
-        // This is an example of a performance test case.
         self.measure {
-            // Put the code you want to measure the time of here.
         }
     }
+}
+
+struct Person {
     
+    var name: String = "Name"
+    
+    var age: Int = 0
+    
+    var id: String?
 }
