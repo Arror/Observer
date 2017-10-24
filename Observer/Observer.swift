@@ -30,7 +30,7 @@ public final class Observer<O> {
         set {
             guard
                 let setMethod = self.setMethodMapping[changeKeyPath] as? (Optional<V>) -> Void,
-                let handler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<Optional<V>> else {
+                let changeHandler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<Optional<V>> else {
                     
                     self.value[keyPath: changeKeyPath] = newValue
                     
@@ -43,7 +43,7 @@ public final class Observer<O> {
             
             let new = self.value[keyPath: changeKeyPath]
             
-            handler(self.value, old, new)
+            changeHandler(self.value, old, new)
         }
     }
     
@@ -54,7 +54,7 @@ public final class Observer<O> {
         set {
             guard
                 let setMethod = self.setMethodMapping[changeKeyPath] as? (V) -> Void,
-                let handler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<V> else {
+                let changeHandler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<V> else {
                     
                     self.value[keyPath: changeKeyPath] = newValue
                     
@@ -67,7 +67,7 @@ public final class Observer<O> {
             
             let new = self.value[keyPath: changeKeyPath]
             
-            handler(self.value, old, new)
+            changeHandler(self.value, old, new)
         }
     }
     
