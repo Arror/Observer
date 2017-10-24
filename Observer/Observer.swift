@@ -8,27 +8,6 @@
 
 import Foundation
 
-/*
- 
- ** Sample
- 
- let op = Observer(Person(name: "Name", age: 10))
- 
- op.observe(keyPath: \Person.name) { p, old, new in
- 
-     print("Old: \(old), New: \(new)")
- }
- 
- op[\.name] = "Name0"
- 
- op[\.name] = "Name1"
- 
- op[\.name] = "Name2"
- 
- op[\.name] = "Name3"
- 
- */
-
 public final class Observer<O> {
     
     internal final class OptionalMethod<V> {
