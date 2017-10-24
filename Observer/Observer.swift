@@ -31,7 +31,7 @@ import Foundation
 
 public final class Observer<O> {
     
-    internal final class OptionalData<V> {
+    internal final class OptionalMethod<V> {
         
         typealias OptionalGet = () -> Optional<V>
         typealias OptionalSet = (Optional<V>) -> Void
@@ -39,14 +39,14 @@ public final class Observer<O> {
         let oGet: OptionalGet
         let oSet: OptionalSet
         
-        init(oGet: @escaping OptionalData.OptionalGet, oSet: @escaping OptionalData.OptionalSet) {
+        init(oGet: @escaping OptionalMethod.OptionalGet, oSet: @escaping OptionalMethod.OptionalSet) {
             
             self.oGet = oGet
             self.oSet = oSet
         }
     }
     
-    internal final class Data<V> {
+    internal final class Method<V> {
         
         typealias Get = () -> V
         typealias Set = (V) -> Void
@@ -54,7 +54,7 @@ public final class Observer<O> {
         let get: Get
         let set: Set
         
-        init(get: @escaping Data.Get, set: @escaping Data.Set) {
+        init(get: @escaping Method.Get, set: @escaping Method.Set) {
             
             self.get = get
             self.set = set
@@ -76,12 +76,12 @@ public final class Observer<O> {
     
     public subscript<V>(changeKeyPath: WritableKeyPath<O, Optional<V>>) -> Optional<V> {
         get {
-            guard let data = self.dataMapping[changeKeyPath] as? Observer.OptionalData<V> else { fatalError("Can't read before observed.") }
+            guard let data = self.dataMapping[changeKeyPath] as? Observer.OptionalMethod<V> else { fatalError("Can't read before observed.") }
             return data.oGet()
         }
         set {
             guard
-                let data = self.dataMapping[changeKeyPath] as? Observer.OptionalData<V>,
+                let data = self.dataMapping[changeKeyPath] as? Observer.OptionalMethod<V>,
                 let handler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<Optional<V>> else {
                     
                     fatalError("Can't write before observed.")
@@ -99,12 +99,12 @@ public final class Observer<O> {
     
     public subscript<V>(changeKeyPath: WritableKeyPath<O, V>) -> V {
         get {
-            guard let data = self.dataMapping[changeKeyPath] as? Observer.Data<V> else { fatalError("Can't read before observed.") }
+            guard let data = self.dataMapping[changeKeyPath] as? Observer.Method<V> else { fatalError("Can't read before observed.") }
             return data.get()
         }
         set {
             guard
-                let data = self.dataMapping[changeKeyPath] as? Observer.Data<V>,
+                let data = self.dataMapping[changeKeyPath] as? Observer.Method<V>,
                 let handler = self.changeHandlerMapping[changeKeyPath] as? Observer.ChangeHandler<V> else {
                     
                     fatalError("Can't write before observed.")
@@ -122,7 +122,7 @@ public final class Observer<O> {
     
     public func observe<V>(keyPath: WritableKeyPath<O, V>, changeHandler: @escaping Observer.ChangeHandler<V>) {
         
-        self.dataMapping[keyPath] = Observer.Data(get: { [unowned self] () -> V in
+        self.dataMapping[keyPath] = Observer.Method(get: { [unowned self] () -> V in
             return self.value[keyPath: keyPath]
             }, set: { [unowned self] v in
                 self.value[keyPath: keyPath] = v
@@ -133,7 +133,7 @@ public final class Observer<O> {
     
     public func observe<V>(keyPath: WritableKeyPath<O, Optional<V>>, changeHandler: @escaping Observer.ChangeHandler<Optional<V>>) {
         
-        self.dataMapping[keyPath] = Observer.OptionalData(oGet: { [unowned self] () -> V? in
+        self.dataMapping[keyPath] = Observer.OptionalMethod(oGet: { [unowned self] () -> V? in
             return self.value[keyPath: keyPath]
             }, oSet: { [unowned self] v in
                 self.value[keyPath: keyPath] = v
