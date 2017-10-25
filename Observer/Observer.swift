@@ -23,6 +23,13 @@ public final class Observer<O> {
         self.value = value
     }
     
+    public init?(_ optionalValue: Optional<O>) {
+        
+        guard let value = optionalValue else { return nil }
+        
+        self.value = value
+    }
+    
     public subscript<V>(changeKeyPath: WritableKeyPath<O, Optional<V>>) -> Optional<V> {
         get {
             return self.value[keyPath: changeKeyPath]
