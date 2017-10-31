@@ -10,7 +10,7 @@ import Foundation
 
 public final class Observer<O> {
     
-    public typealias ChangeHandler<V> = (_ o: O, _ old: V, _ new: V) -> Void
+    public typealias ChangeHandler<V> = (_ o: Observer<O>, _ old: V, _ new: V) -> Void
     
     public private(set) var value: O
     
@@ -50,7 +50,7 @@ public final class Observer<O> {
             
             let new = self.value[keyPath: changeKeyPath]
             
-            changeHandler(self.value, old, new)
+            changeHandler(self, old, new)
         }
     }
     
@@ -74,7 +74,7 @@ public final class Observer<O> {
             
             let new = self.value[keyPath: changeKeyPath]
             
-            changeHandler(self.value, old, new)
+            changeHandler(self, old, new)
         }
     }
     

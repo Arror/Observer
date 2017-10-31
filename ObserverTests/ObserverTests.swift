@@ -23,12 +23,12 @@ class ObserverTests: XCTestCase {
         
         let op = Observer(Person())
         
-        op.observe(keyPath: \.name) { p, old, new in
+        op.observe(keyPath: \.name) { op, old, new in
             
             print("Struct  ==  \t\tName --> \t\tOld: \(old) \t\tNew: \(new)")
         }
         
-        op.observe(keyPath: \.id) { p, old, new in
+        op.observe(keyPath: \.id) { op, old, new in
             
             print("Struct  ==  \t\tID --> \t\tOld: \(old ?? "NULL") \t\tNew: \(new ?? "NULL")")
         }
@@ -49,7 +49,7 @@ class ObserverTests: XCTestCase {
         
         print("\n--------------------------------------------------------------------------------\n")
         
-        op.observe(keyPath: \.ref.value) { p, old, new in
+        op.observe(keyPath: \.ref.value) { op, old, new in
             
             print("StructClass  ==  \t\tRef->Value --> \t\tOld: \(old) \t\tNew: \(new)")
         }
@@ -64,12 +64,12 @@ class ObserverTests: XCTestCase {
         
         let orp = Observer(Student())
         
-        orp.observe(keyPath: \.name) { p, old, new in
+        orp.observe(keyPath: \.name) { op, old, new in
             
             print("Class  ==  \t\tName --> \t\tOld: \(old) \t\tNew: \(new)")
         }
         
-        orp.observe(keyPath: \.id) { p, old, new in
+        orp.observe(keyPath: \.id) { op, old, new in
             
             print("Class  ==  \t\tID --> \t\tOld: \(old ?? "NULL") \t\tNew: \(new ?? "NULL")")
         }
@@ -88,7 +88,7 @@ class ObserverTests: XCTestCase {
         
         print("\n--------------------------------------------------------------------------------\n")
         
-        orp.observe(keyPath: \.structural.value) { p, old, new in
+        orp.observe(keyPath: \.structural.value) { op, old, new in
             
             print("ClassStruct  ==  \t\tStructural->Value --> \t\tOld: \(old) \t\tNew: \(new)")
         }

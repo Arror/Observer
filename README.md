@@ -10,7 +10,7 @@ struct Person {
 
 let op = Observer(Person())
         
-op.observe(keyPath: \.name) { p, old, new in
+op.observe(keyPath: \.name) { op, old, new in
             
     print("Name ==> Old: \(old) -- New: \(new)")
 }
